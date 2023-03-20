@@ -31,6 +31,8 @@ Parameters:
   SqsNotificationLambdaFunctionName:
     Type: String
     Description: SQSからの通知を受ける関数名
+  SnsTopicName:
+    Type: String
 
 Resources:
   HelloWorldFunction:
@@ -271,3 +273,29 @@ Resources:
                 - "*"
       Queues:
         - !Ref Queue
+
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref SnsTopicName
+
+  SnsSendMessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sns-send-message/
+      Handler: sns-send-message
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /snsSendMessage
+            Method: POST
+      Environment:
+        Variables:
+          AWS_ACCOUNT_NUMBER: !Ref AwsAccountNumber
+          AWS_SNS_TOPICNAME: !Ref SnsTopicName
+      Policies:
+        - AmazonSNSFullAccess
