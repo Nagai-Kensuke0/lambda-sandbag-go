@@ -299,3 +299,17 @@ Resources:
           AWS_SNS_TOPICNAME: !Ref SnsTopicName
       Policies:
         - AmazonSNSFullAccess
+
+  SnsNotificationLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sns-notification/
+      Handler: sns-notification
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        MySnsEvent:
+          Type: SNS
+          Properties:
+            Topic: !Ref SnsTopic
