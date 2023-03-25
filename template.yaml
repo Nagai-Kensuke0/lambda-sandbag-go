@@ -313,3 +313,32 @@ Resources:
           Type: SNS
           Properties:
             Topic: !Ref SnsTopic
+
+  LambdaInvokeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda-invoke/
+      Handler: lambda-invoke
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /lambda-invoke
+            Method: GET
+      Environment:
+        Variables:
+          AWS_LAMBDA_TRIGGER_FUNCTION: !GetAtt LambdaTriggerFunction.Arn
+      Policies:
+        - AWSLambda_FullAccess
+
+  LambdaTriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda-trigger/
+      Handler: lambda-trigger
+      Runtime: go1.x
+      Architectures:
+        - x86_64
