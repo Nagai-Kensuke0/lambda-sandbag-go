@@ -19,20 +19,19 @@
 
 ## 各フォルダ配下の Lambda 関数の説明
 
-- lambda-invoke/main.go
-- lambda-trigger/main.go
-  lambda-invoke/main.go をトリガーとして lambda-invoke/main.go の Lambda を発火させる
+- lambda-invoke/main.go, lambda-trigger/main.go
+
+  1. lambda-invoke/main.go をトリガーとして lambda-invoke/main.go の Lambda を発火させる
 
 - s3-notification/main.go
-  特定の Lambdab バゲットにファイルを置くことで発火する関数
 
-- sns-notification/main.go
-- sns-send-message/main.go
+  1. 特定の Lambdab バゲットにファイルを置くことで発火する関数
+
+- sns-notification/main.go, sns-send-message/main.go
 
   1. sns-send-message/main.go で Amazon SNS（以下 SNS） にメッセージを送る
   2. SNS は sns-notification/main.go の Lambda を発火させる
 
-- sqs-notification/main.go
-- sqs-send-message/main.go
+- sqs-notification/main.go, sqs-send-message/main.go
   1. sqs-send-message/main.go で Amazon SQS（以下 SQS） にメッセージを送る
   2. SQS は sqs-notification/main.go の Lambda を発火させる
